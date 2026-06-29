@@ -84,15 +84,19 @@ const RANGE_CONFIG: Record<TimeRange, RangeConfig> = {
   "1Y": { points: 52, stepMs: 7 * 24 * 60 * 60_000, volatility: 18.0 }, // รายสัปดาห์
 };
 
-/** สร้างประวัติราคาแบบ deterministic-ish ย้อนหลังตามช่วงเวลา */
-export function getMockHistory(range: TimeRange): HistoryResponse {
+/**
+ * สร้างประวัติราคาแบบ deterministic-ish ย้อนหลังตามช่วงเวลา
+ * @param anchor ราคาล่าสุดที่ใช้เป็นจุดเริ่ม (เช่นราคาจริงจาก live source)
+ *               เพื่อให้กราฟ/ตารางอยู่รอบ ๆ ราคาตลาดจริง
+ */
+export function getMockHistory(range: TimeRange, anchor?: number): HistoryResponse {
   const cfg = RANGE_CONFIG[range];
   const now = Date.now();
   const points: PricePoint[] = [];
   const candles: Candle[] = [];
 
   // เดินย้อนจากปัจจุบันกลับไปอดีต แล้วกลับด้านให้เรียงเวลา
-  let price = currentSpot;
+  let price = anchor && anchor > 0 ? anchor : currentSpot;
   const reversed: PricePoint[] = [];
   for (let i = 0; i < cfg.points; i++) {
     const time = now - i * cfg.stepMs;
