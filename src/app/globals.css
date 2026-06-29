@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light theme */
+    --background: 40 30% 97%;
+    --foreground: 30 10% 12%;
+    --card: 40 30% 100%;
+    --card-foreground: 30 10% 12%;
+    --primary: 38 92% 50%;
+    --primary-foreground: 30 20% 10%;
+    --secondary: 40 15% 92%;
+    --secondary-foreground: 30 10% 20%;
+    --muted: 40 12% 90%;
+    --muted-foreground: 30 8% 40%;
+    --accent: 40 20% 88%;
+    --accent-foreground: 30 10% 15%;
+    --border: 40 15% 85%;
+    --input: 40 15% 85%;
+    --ring: 38 92% 50%;
+    --up: 142 71% 38%;
+    --down: 0 72% 48%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Dark theme — โทนดำ + ทอง */
+    --background: 30 12% 6%;
+    --foreground: 40 30% 92%;
+    --card: 30 10% 10%;
+    --card-foreground: 40 30% 92%;
+    --primary: 43 74% 55%;
+    --primary-foreground: 30 20% 8%;
+    --secondary: 30 8% 16%;
+    --secondary-foreground: 40 20% 85%;
+    --muted: 30 8% 16%;
+    --muted-foreground: 40 10% 60%;
+    --accent: 30 8% 18%;
+    --accent-foreground: 40 20% 88%;
+    --border: 40 10% 20%;
+    --input: 40 10% 22%;
+    --ring: 43 74% 55%;
+    --up: 142 64% 48%;
+    --down: 0 72% 56%;
+    --radius: 0.75rem;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* พื้นหลังแบบ gradient + glow ทอง สำหรับ dashboard */
+.app-bg {
+  background-image:
+    radial-gradient(60rem 40rem at 10% -10%, hsl(43 74% 50% / 0.08), transparent 60%),
+    radial-gradient(50rem 40rem at 110% 10%, hsl(43 74% 50% / 0.06), transparent 55%);
+}
+
+/* เส้นบางเรืองแสงทองด้านบนการ์ด */
+.gold-line {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    hsl(43 74% 55% / 0.6),
+    transparent
+  );
+}
+
+/* ซ่อน scrollbar แนวนอนของแถบช่วงเวลาบนมือถือ */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
