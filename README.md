@@ -97,6 +97,43 @@ return () => ws.close();
 
 ---
 
+## 🖥️ แอป Windows Desktop (Electron)
+
+โปรเจกต์นี้แพ็กเป็นแอป Windows (`.exe`) ได้ด้วย Electron โดยใช้ Next.js **standalone output**
+เป็น local server ฝังในแอป (รองรับทั้งโหมด mock และ live รวมถึง API key ที่ต้องเก็บฝั่ง server)
+
+```bash
+npm install
+
+# พัฒนา/ทดสอบแบบ hot-reload (เปิด next dev + หน้าต่าง Electron)
+npm run electron:dev
+
+# พรีวิวแบบ production build ในหน้าต่าง Electron (ไม่ต้องแพ็กเกจ)
+npm run electron:preview
+
+# แพ็กเป็นตัวติดตั้ง Windows (.exe) — ต้องรันบนเครื่องที่ต่อเน็ตได้ (ดาวน์โหลด Electron binary)
+npm run electron:build
+```
+
+ผลลัพธ์ (`.exe` ทั้ง NSIS installer และ portable) จะอยู่ในโฟลเดอร์ `release/`
+
+> หมายเหตุ: การรัน `npm run electron:build` ต้องดาวน์โหลด Electron prebuilt binary จาก GitHub
+> หากเครื่อง/สภาพแวดล้อมของคุณจำกัด egress ให้ใช้ GitHub Actions workflow
+> [`.github/workflows/build-windows.yml`](.github/workflows/build-windows.yml) แทน
+> (รันด้วย `workflow_dispatch` หรือ push แท็ก `v*`) ซึ่งจะรันบน `windows-latest` runner
+> ที่ไม่มีข้อจำกัดนี้ แล้วดาวน์โหลดไฟล์ `.exe` จาก workflow artifact
+
+โครงสร้างที่เกี่ยวข้อง:
+
+```
+electron/
+├── main.js                          # Electron main process (สร้างหน้าต่าง + สตาร์ท local server)
+├── preload.js                       # Preload script (ไม่ expose privileged API ใดๆ)
+└── scripts/copy-standalone-assets.js # คัดลอก public/ และ .next/static เข้า .next/standalone
+```
+
+---
+
 ## 🛠️ เทคโนโลยี
 
-Next.js 14 · React 18 · TypeScript 5 · Tailwind CSS 3 · Recharts · next-themes · lucide-react
+Next.js 14 · React 18 · TypeScript 5 · Tailwind CSS 3 · Recharts · next-themes · lucide-react · Electron

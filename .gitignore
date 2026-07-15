@@ -2,6 +2,7 @@
 /.next/
 /out/
 /build
+/release
 *.pem
 .env*.local
 .DS_Store

@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "description": "Real-time Gold Price Dashboard (XAU/USD + Thai Gold 96.5%)",
+  "main": "electron/main.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build:standalone": "next build && node electron/scripts/copy-standalone-assets.js",
+    "electron:dev": "concurrently -k -n NEXT,ELECTRON \"npm run dev\" \"wait-on http://localhost:3000 && cross-env ELECTRON_DEV=1 electron .\"",
+    "electron:preview": "npm run build:standalone && electron .",
+    "electron:build": "npm run build:standalone && electron-builder --win"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
@@ -25,8 +30,38 @@
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
+    "concurrently": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "electron": "^32.2.0",
+    "electron-builder": "^25.1.8",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.13",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "wait-on": "^8.0.1"
+  },
+  "build": {
+    "appId": "com.golddashboard.desktop",
+    "productName": "Gold Dashboard",
+    "files": [
+      "electron/main.js",
+      "electron/preload.js"
+    ],
+    "extraResources": [
+      { "from": ".next/standalone", "to": "standalone" }
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    }
   }
 }
